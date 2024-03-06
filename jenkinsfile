@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Your build commands or scripts go here
+                    echo 'Building...'
+                    // Example: sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Your test commands or scripts go here
+                    echo 'Testing...'
+                    // Example: sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Your deploy commands or scripts go here
+                    echo 'Deploying...'
+                    // Example: sh 'scp target/myapp.war user@server:/path/to/deployment'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // This block will always run, even if the stages fail
+                echo 'Post-condition: Displaying "pipeline failed" in case of any errors'
+            }
+        }
+
+        failure {
+            script {
+                echo 'Pipeline failed'
+                // You can add more actions here in case of failure
+            }
+        }
+    }
+}
