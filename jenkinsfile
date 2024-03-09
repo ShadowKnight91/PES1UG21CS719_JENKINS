@@ -1,51 +1,43 @@
-pipeline {
+pipeline (
     agent any
-
     stages {
+        // Stage 1: Clone repository
+        stage('Clone repository') {
+        steps {
+            checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/main']],
+            userRemoteConfigs: [[url: 'https://github.com/ShadowKnight91/PES1UG21CS719_JENKINS']]
+                ])
+            }
+        }
+        
+        // Stage 2: Build
         stage('Build') {
             steps {
-                script {
-                    // Your build commands or scripts go here
-                    echo 'Building...'
-                    // Example: sh 'mvn clean install'
-                }
+            build 'PES1UG21CS719-1'
+            sh 'g++ first.cpp -o output'
             }
         }
 
+        // Stage 3: Test
         stage('Test') {
             steps {
-                script {
-                    // Your test commands or scripts go here
-                    echo 'Testing...'
-                    // Example: sh 'mvn test'
-                }
+            sh './output'
             }
         }
 
-        stage('Deploy') {
+        // Stage 4: Deploy
+        stage("Deploy') {
             steps {
-                script {
-                    // Your deploy commands or scripts go here
-                    echo 'Deploying...'
-                    // Example: sh 'scp target/myapp.war user@server:/path/to/deployment'
+            echo 'deploy'
                 }
             }
         }
-    }
 
-    post {
-        always {
-            script {
-                // This block will always run, even if the stages fail
-                echo 'Post-condition: Displaying "pipeline failed" in case of any errors'
-            }
-        }
-
-        failure {
-            script {
-                echo 'Pipeline failed'
-                // You can add more actions here in case of failure
-            }
+        post {
+            failure {
+                error 'Pipeline failed'
         }
     }
 }
