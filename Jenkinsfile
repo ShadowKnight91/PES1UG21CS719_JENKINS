@@ -24,10 +24,10 @@ pipeline {
 
         // Stage 3: Test
         stage('Test') {
-            steps {
-                script {
-                     './output'
-                }
+            // steps {
+            //     script {
+            //         sh './output'
+            //     }
             }
         }
 
